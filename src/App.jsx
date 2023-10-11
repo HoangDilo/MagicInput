@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import MagicInputReal from './MagicInputReal/MAgicInputReal';
+import MagicInputReal from './MagicInputReal/MagicInputReal';
 
 function App() {
   const [inputStatus, setInputStatus] = useState('default');
@@ -9,6 +9,7 @@ function App() {
   const [inputType, setInputType] = useState('password');
   let hint = 'Just type in!';
   let errorMessage = 'password fake';
+  
   /*
   validate the input value here
   */
