@@ -4,7 +4,7 @@ import Tick from './SVGComponents/Tick';
 import UpDown from './Buttons/UpDown';
 import HideShow from './Buttons/HideShow';
 
-function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder, isRequired, hint, errorMessage, icon, focusTheme, setInputValue, setInputStatus }) {
+function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder, isRequired, hint, errorMessage, icon, focusTheme, setInputValue, setInputStatus, setInputError }) {
     const [theme, setTheme] = useState();
     const inputRef = useRef();
 
@@ -43,6 +43,9 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder
         if (inputValue) {
             setInputStatus('filled')
         } else {
+            if (isRequired && label) {
+                setInputError(<span style={{color: 'red'}}>This field can not be empty</span>)
+            }
             setInputStatus('default')
         }
     }
@@ -60,6 +63,7 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder
     const setInputTypeClone = (type) => {
         inputRef.current.type = type;
     }
+
     return (
         <div className="input-container">
             <div className='label-input'>
@@ -96,7 +100,7 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder
                             (inputType === 'number') && <UpDown updateUp={updateUp} updateDown={updateDown} />
                         }
                         {
-                            (inputType === 'password') && <HideShow setInputTypeClone={(type) => setInputTypeClone(type)} inputStatus={inputStatus}/>
+                            (inputType === 'password') && <HideShow setInputTypeClone={(type) => setInputTypeClone(type)} inputStatus={inputStatus} setInputStatus={setInputStatus}/>
                         }
                     </div>
                 </div>

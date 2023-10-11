@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import './HideShow.css'
 
-function HideShow({ inputStatus, setInputTypeClone }) {
+function HideShow({ inputStatus, setInputTypeClone, setInputStatus }) {
     const [toggleStatus, setToggleStatus] = useState(false);
 
     useEffect(() => {

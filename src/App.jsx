@@ -47,6 +47,7 @@ function App() {
     }
   }, [email2Value])
 
+
   return (
     <div className='inputs'>
       This is a fake form:
@@ -64,7 +65,8 @@ function App() {
         focusTheme='#5570F1'
 
         setInputValue={setEmailValue}
-        setInputStatus={setEmailStatus} />
+        setInputStatus={setEmailStatus} 
+        setInputError={setEmailError}/>
 
       <MagicInputReal
         inputStatus={email2Status}
@@ -78,7 +80,8 @@ function App() {
         focusTheme='#5570F1'
 
         setInputValue={setEmail2Value}
-        setInputStatus={setEmail2Status} />
+        setInputStatus={setEmail2Status} 
+        setInputError={setEmail2Error}/>
 
       <MagicInputReal
         inputStatus={passwordStatus}
@@ -94,7 +97,8 @@ function App() {
         focusTheme='#FF20FF'
 
         setInputValue={setPasswordValue}
-        setInputStatus={setPasswordStatus} />
+        setInputStatus={setPasswordStatus} 
+        setInputError={setPasswordError}/>
 
       <MagicInputReal
         inputStatus='disabled'
@@ -105,12 +109,8 @@ function App() {
         placeholder="Enter your password"
         isRequired={false}
         hint={'Email should have this format: \'abc@xyz.ijk\''}
-        errorMessage={passwordError}
         icon='lock'
-        focusTheme='#FF20FF'
-
-        setInputValue={setPasswordValue}
-        setInputStatus={setPasswordStatus} />
+        focusTheme='#FF20FF' />
 
       <MagicInputReal
         inputStatus={numberStatus}
@@ -126,7 +126,8 @@ function App() {
         focusTheme='red'
 
         setInputValue={setNumberValue}
-        setInputStatus={setNumberStatus} />
+        setInputStatus={setNumberStatus} 
+        setInputError={setNumberError}/>
     </div>
   )
 }

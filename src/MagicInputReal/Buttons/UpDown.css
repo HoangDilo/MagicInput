@@ -13,6 +13,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
 .down {
@@ -23,5 +24,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
