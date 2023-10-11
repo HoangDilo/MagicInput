@@ -4,10 +4,9 @@ import Tick from './SVGComponents/Tick';
 import UpDown from './Buttons/UpDown';
 import HideShow from './Buttons/HideShow';
 
-function MagicInputReal({ inputStatus, inputValue, inputType, label, isRequired, hint, errorMessage, icon, focusTheme, setInputValue, setInputType, setInputStatus }) {
+function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder, isRequired, hint, errorMessage, icon, focusTheme, setInputValue, setInputStatus }) {
     const [theme, setTheme] = useState();
     const inputRef = useRef();
-    const [inputTypeClone, setInputTypeClone] = useState(inputType);
 
     useEffect(() => {
         switch (inputStatus) {
@@ -37,9 +36,9 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, isRequired,
     const handleInput = () => {
         setInputValue(inputRef.current.value)
     }
-    const handleFocus = () => {
-        setInputStatus('focus')
-    }
+    // const handleFocus = () => {
+        
+    // }
     const handleBlur = () => {
         if (inputValue) {
             setInputStatus('filled')
@@ -58,6 +57,9 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, isRequired,
     const updateDown = () => {
         inputRef.current.value--;
     }
+    const setInputTypeClone = (type) => {
+        inputRef.current.type = type;
+    }
     return (
         <div className="input-container">
             <div className='label-input'>
@@ -67,7 +69,7 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, isRequired,
                 </label>}
                 <div className='smaller-input-container'>
                     <div className={`icon ${icon}`}></div>
-                    <input type={inputTypeClone}
+                    <input type={inputType}
                         id={`input-${label}`}
                         style={
                             { 
@@ -76,9 +78,11 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, isRequired,
                                 paddingRight: configurePaddingRight()
                             }
                         }
+                        placeholder={placeholder}
+                        disabled={inputStatus === 'disabled'}
                         ref={inputRef}
                         onInput={handleInput}
-                        onFocus={handleFocus}
+                        onFocus={() => setInputStatus('focus')}
                         onBlur={handleBlur} />
                     <div className='right-icon'>
                         {
@@ -92,7 +96,7 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, isRequired,
                             (inputType === 'number') && <UpDown updateUp={updateUp} updateDown={updateDown} />
                         }
                         {
-                            (inputType === 'password') && <HideShow setInputTypeClone={setInputTypeClone}/>
+                            (inputType === 'password') && <HideShow setInputTypeClone={(type) => setInputTypeClone(type)} inputStatus={inputStatus}/>
                         }
                     </div>
                 </div>
