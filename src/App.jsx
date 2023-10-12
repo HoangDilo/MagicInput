@@ -146,6 +146,7 @@ function App() {
         isRequired={true}
         hint={'Make sure your password is strong'}
         errorMessage={passwordError}
+        emptyMessage="Password can not be empty"
         icon='lock'
         focusTheme='#FF20FF'
         funtionalButton={( updateUp, updateDown, inputStatus, callBack ) => <HideShow setInputTypeClone={callBack} inputStatus={inputStatus} />}
