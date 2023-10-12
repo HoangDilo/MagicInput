@@ -63,10 +63,12 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder
     }
     const updateUp = () => {
         inputRef.current.value++;
+        inputRef.current.focus();
         setInputValue(inputRef.current.value);
     }
     const updateDown = () => {
         inputRef.current.value--;
+        inputRef.current.focus();
         setInputValue(inputRef.current.value);
     }
     const setInputTypeClone = (type) => { 
