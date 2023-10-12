@@ -9,19 +9,19 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder
     useEffect(() => {
         switch (inputStatus) {
             case 'default':
-                console.log('default');
+                //console.log('default');
                 setTheme('#CFD3D4');
                 break;
             case 'focus':
-                console.log('focus');
+                //console.log('focus');
                 setTheme(focusTheme);
                 break;
             case 'filled':
-                console.log('filled');
+                //console.log('filled');
                 setTheme('#5E6366');
                 break;
             case 'error':
-                console.log('error');
+                //console.log('error');
                 setTheme('#F57E77');
                 break;
             case 'disabled':

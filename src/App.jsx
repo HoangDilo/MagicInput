@@ -18,7 +18,7 @@ function App() {
   const [passwordError, setPasswordError] = useState('');
 
   const [numberStatus, setNumberStatus] = useState('default');
-  const [numberValue, setNumberValue] = useState('0');
+  const [numberValue, setNumberValue] = useState(0);
   const [numberError, setNumberError] = useState('');
 
   const [number2Status, setNumber2Status] = useState('default');
@@ -47,7 +47,7 @@ function App() {
   //valid email 2
   useEffect(() => {
     if (email2Value) {
-      console.log(email2Value);
+      //console.log(email2Value);
       const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       if (email2Value.toLocaleLowerCase().match(emailRegex)) {
         setEmail2Status('focus');
@@ -68,7 +68,7 @@ function App() {
     if (passwordValue) {
       const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,32}$/;
       if (passwordValue.match(passwordRegex)) {
-        console.log(passwordValue);
+        //console.log(passwordValue);
         setPasswordStatus('focus');
         // setEmailStatus('success');
         setPasswordError('');
@@ -84,22 +84,17 @@ function App() {
 
   //validate number 1
   useEffect(() => {
-    console.log(numberValue);
+    //console.log(numberValue);
     if (numberValue) {
       const numberRegex = /^-?\d+(\.\d+)?$/;
       if (numberValue.match(numberRegex)) {
-        console.log('match');
-        setNumberStatus('filled')
-        //setNumberStatus('focus');
-        // setEmailStatus('success');
+        setNumberStatus('focus')
         setNumberError('');
       } else {
-        console.log('not match');
         setNumberStatus('error');
         setNumberError(<span style={{ color: 'red' }}>Number must be number!</span>)
       }
-    } else {
-      console.log('k co input');
+    } else if(numberStatus == 'error') {
       setNumberStatus('focus');
       setNumberError('');
     }
@@ -173,12 +168,13 @@ function App() {
       <MagicInputReal
         inputStatus={numberStatus}
         inputValue={numberValue}
-        inputType="number"
+        inputType="text"
 
         label="Number"
         placeholder="0"
         isRequired={true}
         errorMessage={numberError}
+        emptyMessage={<span style={{color: 'red'}}>Number can not be empty</span>}
         icon='lock'
         focusTheme='blue'
         funtionalButton={(updateUp, updateDown, inputStatus, callBack) => <UpDown updateUp={updateUp} updateDown={updateDown} inputStatus={inputStatus} />}
