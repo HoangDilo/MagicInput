@@ -1,29 +1,28 @@
 import './MagicInputReal.css'
 import { useEffect, useRef, useState } from "react"
-import Tick from './SVGComponents/Tick';
-import UpDown from './Buttons/UpDown';
-import HideShow from './Buttons/HideShow';
 
-function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder, isRequired, hint, errorMessage, icon, focusTheme, setInputValue, setInputStatus, setInputError }) {
+
+function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder, isRequired, hint, errorMessage, emptyMessage, icon, focusTheme, funtionalButton, setInputValue, setInputStatus, setInputError }) {
     const [theme, setTheme] = useState();
     const inputRef = useRef();
 
     useEffect(() => {
         switch (inputStatus) {
             case 'default':
+                console.log('default');
                 setTheme('#CFD3D4');
                 break;
             case 'focus':
+                console.log('focus');
                 setTheme(focusTheme);
                 break;
             case 'filled':
+                console.log('filled');
                 setTheme('#5E6366');
                 break;
             case 'error':
+                console.log('error');
                 setTheme('#F57E77');
-                break;
-            case 'success':
-                setTheme('#32936F');
                 break;
             case 'disabled':
                 setTheme('#DDE2E5');
@@ -34,34 +33,44 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder
     }, [inputStatus])
 
     const handleInput = () => {
-        setInputValue(inputRef.current.value)
+        setInputValue(inputRef.current.value);
     }
-    // const handleFocus = () => {
-        
-    // }
+    const handleFocus = () => {
+        if (!errorMessage) {
+            setInputStatus('focus');
+        }
+    }
     const handleBlur = () => {
         if (inputValue) {
-            setInputStatus('filled')
+            if (errorMessage) {
+                setInputStatus('error');
+            } else {
+                setInputStatus('filled')
+            }
         } else {
             if (isRequired && label) {
-                setInputError(<span style={{color: 'red'}}>This field can not be empty</span>)
+                setInputStatus('error');
+                setInputError(emptyMessage);
+            } else {
+                if (!errorMessage) {
+                    setInputStatus('default');
+                }
             }
-            setInputStatus('default')
         }
     }
     const configurePaddingRight = () => {
-        if(inputType === 'password' || inputType === 'number') {
-            return '88px'
-        }
+        funtionalButton && '88px'
     }
     const updateUp = () => {
         inputRef.current.value++;
+        setInputValue(inputRef.current.value);
     }
     const updateDown = () => {
         inputRef.current.value--;
+        setInputValue(inputRef.current.value);
     }
-    const setInputTypeClone = (type) => {
-        inputRef.current.type = type;
+    const setInputTypeClone = (type) => { 
+        inputRef.current.type = type; 
     }
 
     return (
@@ -75,33 +84,21 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder
                     <div className={`icon ${icon}`}></div>
                     <input type={inputType}
                         id={`input-${label}`}
-                        style={
-                            { 
-                                border: `1px solid ${theme}`, 
-                                paddingLeft: icon ? '56px' : '',
-                                paddingRight: configurePaddingRight()
-                            }
-                        }
+                        style={{
+                            border: `1px solid ${theme}`,
+                            paddingLeft: icon ? '56px' : '',
+                            paddingRight: configurePaddingRight()
+                        }}
                         placeholder={placeholder}
                         disabled={inputStatus === 'disabled'}
                         ref={inputRef}
                         onInput={handleInput}
-                        onFocus={() => setInputStatus('focus')}
+                        onFocus={handleFocus}
                         onBlur={handleBlur} />
                     <div className='right-icon'>
-                        {
-                            inputStatus === 'success' && (
-                                <div className='check'>
-                                    <Tick />
-                                </div>
-                            )
-                        }
-                        {
-                            (inputType === 'number') && <UpDown updateUp={updateUp} updateDown={updateDown} />
-                        }
-                        {
-                            (inputType === 'password') && <HideShow setInputTypeClone={(type) => setInputTypeClone(type)} inputStatus={inputStatus} setInputStatus={setInputStatus}/>
-                        }
+                        {funtionalButton && funtionalButton(updateUp, updateDown, inputStatus, (type) => setInputTypeClone(type))}
+                        {/* {(inputType === 'number') && <UpDown updateUp={updateUp} updateDown={updateDown} inputStatus={inputStatus} />}
+                        {(inputType === 'password') && <HideShow setInputTypeClone={(type) => setInputTypeClone(type)} inputStatus={inputStatus} />} */}
                     </div>
                 </div>
             </div>
