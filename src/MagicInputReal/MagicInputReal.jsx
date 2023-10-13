@@ -8,39 +8,29 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder
     const [internalType, setInternalType] = useState(inputType);
     const inputRef = useRef();
 
-    useEffect(() => {
-        if(inputType === 'number') {
-            setInternalType('text');
-            inputRef.current.addEventListener('keydown', (event) => {
-                const isNumber = /[0-9eE\.\-]/.test(event.key);
-                if(!isNumber) {
-                    event.preventDefault();
-                }
-            })
-        }
-    }, [inputType])
-
     //gan lai input value tu parent khi co inputValue thay doi
     useEffect(() => {
         setInternalValue(inputValue);
     }, [inputValue])
 
     useEffect(() => {
+        if (inputType === 'number') {
+            setInternalType('text');
+        }
+    }, [inputType])
+
+    useEffect(() => {
         switch (inputStatus) {
             case 'default':
-                //console.log('default');
                 setTheme('#CFD3D4');
                 break;
             case 'focus':
-                //console.log('focus');
                 setTheme(focusTheme);
                 break;
             case 'filled':
-                //console.log('filled');
                 setTheme('#5E6366');
                 break;
             case 'error':
-                //console.log('error');
                 setTheme('#F57E77');
                 break;
             case 'disabled':
@@ -51,7 +41,6 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder
         }
     }, [inputStatus])
 
-    //set lai state inputValue cua parent
     const handleInput = (event) => {
         setInputValue(event.target.value);
     }
@@ -76,6 +65,12 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder
                     setInputStatus('default');
                 }
             }
+        }
+    }
+    const handleKeyDown = (event) => {
+        const isNumber = /[0-9eE\.\-]/.test(event.key);
+        if (!isNumber) {
+            event.preventDefault();
         }
     }
     const configurePaddingRight = () => {
@@ -114,13 +109,15 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder
                         ref={inputRef}
                         onChange={(event) => handleInput(event)}
                         onFocus={handleFocus}
-                        onBlur={handleBlur} />
+                        onBlur={handleBlur}
+                        onKeyDown={inputType === 'number' ? handleKeyDown : ()=>{}}
+                    />
                     <div className='right-icon'>
                         {funtionalButton && funtionalButton(updateUp, updateDown, inputStatus, (type) => setInternalType(type))}
                     </div>
                 </div>
             </div>
-            <div className='message' style={{color: errorMessage && 'red'}}>
+            <div className='message' style={{ color: errorMessage && 'red' }}>
                 {errorMessage ? errorMessage : hint}
             </div>
         </div>

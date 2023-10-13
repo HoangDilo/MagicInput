@@ -22,7 +22,7 @@ function App() {
   const [numberError, setNumberError] = useState('');
 
   const [number2Status, setNumber2Status] = useState('default');
-  const [number2Value, setNumber2Value] = useState('0');
+  const [number2Value, setNumber2Value] = useState('');
   const [number2Error, setNumber2Error] = useState('');
 
   const [number3Status, setNumber3Status] = useState('default');
