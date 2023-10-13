@@ -25,6 +25,10 @@ function App() {
   const [number2Value, setNumber2Value] = useState('0');
   const [number2Error, setNumber2Error] = useState('');
 
+  const [number3Status, setNumber3Status] = useState('default');
+  const [number3Value, setNumber3Value] = useState('');
+  const [number3Error, setNumber3Error] = useState('');
+
   //valid email 1
   useEffect(() => {
     if (emailValue) {
@@ -38,7 +42,7 @@ function App() {
         setEmailStatus('error');
         setEmailError(<span>Email is not valid</span>)
       }
-    } else if (emailStatus !== 'default'){
+    } else if (emailStatus !== 'default') {
       setEmailStatus('error');
       setEmailError('Are you dumb? I said email CAN\'T be empty!');
     }
@@ -57,7 +61,10 @@ function App() {
         setEmail2Status('error');
         setEmail2Error(<span>Email is not valid</span>)
       }
-    } 
+    } else if(email2Status !== 'default'){
+      setEmail2Status('focus');
+      setEmail2Error('');
+    }
   }, [email2Value])
 
   //validate password 1
@@ -73,7 +80,7 @@ function App() {
         setPasswordStatus('error');
         setPasswordError(<span>Password must be at least 8 Characters and must contain at least a Capital Letter, a Number and a Special Character.</span>)
       }
-    } else if (passwordStatus !== 'default'){
+    } else if (passwordStatus !== 'default') {
       setPasswordStatus('error');
       setPasswordError('Password can not be empty');
     }
@@ -91,113 +98,149 @@ function App() {
         setNumberStatus('error');
         setNumberError(<span style={{ color: 'red' }}>Number must be number!</span>)
       }
-    } else if(numberStatus !== 'default') {
+    } else if (numberStatus !== 'default') {
       setNumberStatus('error');
       setNumberError('Number can not be empty');
     }
   }, [numberValue])
 
+  //validate number 3
+  useEffect(() => {
+    if (number3Value) {
+      const number3Regex = /^[-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?$/;
+      if (number3Value.match(number3Regex)) {
+        setNumber3Status('focus')
+        setNumber3Error('');
+      } else {
+        setNumber3Status('error');
+        setNumber3Error(<span style={{ color: 'red' }}>Number must be number!</span>)
+      }
+    } else if(number3Status !== 'default'){
+      setNumber3Status('focus')
+      setNumber3Error('');
+    }
+  }, [number3Value])
+
   return (
-    <div className='inputs'>
-      This is a fake form:
-      <MagicInputReal
-        inputStatus={emailStatus}
-        inputValue={emailValue}
-        inputType="text"
+    <div className='container'>
+      <div className='inputs'>
+        <MagicInputReal
+          inputStatus={emailStatus}
+          inputValue={emailValue}
+          inputType="text"
 
-        label="Email"
-        placeholder="Enter your email"
-        isRequired={true}
-        hint={'Email should have this format: \'abc@xyz.ijk\''}
-        errorMessage={emailError}
-        emptyMessage="Email can not be empty"
-        icon='heart'
-        focusTheme='#5570F1'
+          label="Email"
+          placeholder="Enter your email"
+          isRequired={true}
+          hint={'Email should have this format: \'abc@xyz.ijk\''}
+          errorMessage={emailError}
+          emptyMessage="Email can not be empty"
+          icon='heart'
+          focusTheme='#5570F1'
 
-        setInputValue={setEmailValue}
-        setInputStatus={setEmailStatus}
-        setInputError={setEmailError} />
+          setInputValue={setEmailValue}
+          setInputStatus={setEmailStatus}
+          setInputError={setEmailError} />
 
-      <MagicInputReal
-        inputStatus={email2Status}
-        inputValue={email2Value}
-        inputType="text"
+        <MagicInputReal
+          inputStatus={email2Status}
+          inputValue={email2Value}
+          inputType="text"
 
-        placeholder="Enter your email"
-        isRequired={true}
-        errorMessage={email2Error}
-        icon='heart'
-        focusTheme='#5570F1'
+          placeholder="Enter your email"
+          isRequired={true}
+          errorMessage={email2Error}
+          icon='heart'
+          focusTheme='#5570F1'
 
-        setInputValue={setEmail2Value}
-        setInputStatus={setEmail2Status}
-        setInputError={setEmail2Error} />
+          setInputValue={setEmail2Value}
+          setInputStatus={setEmail2Status}
+          setInputError={setEmail2Error} />
 
-      <MagicInputReal
-        inputStatus={passwordStatus}
-        inputValue={passwordValue}
-        inputType="password"
+        <MagicInputReal
+          inputStatus={passwordStatus}
+          inputValue={passwordValue}
+          inputType="password"
 
-        label="Password"
-        placeholder="Enter your password"
-        isRequired={true}
-        hint={'Make sure your password is strong'}
-        errorMessage={passwordError}
-        emptyMessage="Password can be empty"
+          label="Password"
+          placeholder="Enter your password"
+          isRequired={true}
+          hint={'Make sure your password is strong'}
+          errorMessage={passwordError}
+          emptyMessage="Password can be empty"
 
-        icon='lock'
-        focusTheme='#FF20FF'
-        funtionalButton={( updateUp, updateDown, inputStatus, callBack ) => <HideShow setInputTypeClone={callBack} inputStatus={inputStatus} />}
+          icon='lock'
+          focusTheme='#FF20FF'
+          funtionalButton={(updateUp, updateDown, inputStatus, callBack) => <HideShow setInputTypeClone={callBack} inputStatus={inputStatus} />}
 
-        setInputValue={setPasswordValue}
-        setInputStatus={setPasswordStatus}
-        setInputError={setPasswordError} />
+          setInputValue={setPasswordValue}
+          setInputStatus={setPasswordStatus}
+          setInputError={setPasswordError} />
 
-      <MagicInputReal
-        inputStatus='disabled'
-        inputValue=''
-        inputType="password"
+        <MagicInputReal
+          inputStatus='disabled'
+          inputValue=''
+          inputType="password"
 
-        label="Password-2"
-        placeholder="Enter your password"
-        isRequired={false}
-        icon='lock'
-        focusTheme='#FF20FF' />
+          label="Password-2"
+          placeholder="Enter your password"
+          isRequired={false}
+          icon='lock'
+          focusTheme='#FF20FF' />
 
-      <MagicInputReal
-        inputStatus={numberStatus}
-        inputValue={numberValue}
-        inputType="number"
+        <MagicInputReal
+          inputStatus={numberStatus}
+          inputValue={numberValue}
+          inputType="number"
 
-        label="Number"
-        placeholder="0"
-        isRequired={true}
-        errorMessage={numberError}
-        emptyMessage="Number can not be empty"
+          label="Number"
+          placeholder="0"
+          isRequired={true}
+          errorMessage={numberError}
+          emptyMessage="Number can not be empty"
 
-        icon='lock'
-        focusTheme='blue'
-        funtionalButton={(updateUp, updateDown, inputStatus, callBack) => <UpDown updateUp={updateUp} updateDown={updateDown} inputStatus={inputStatus} />}
+          icon='lock'
+          focusTheme='blue'
+          funtionalButton={(updateUp, updateDown, inputStatus, callBack) => <UpDown updateUp={updateUp} updateDown={updateDown} inputStatus={inputStatus} />}
 
-        setInputValue={setNumberValue}
-        setInputStatus={setNumberStatus}
-        setInputError={setNumberError} />
+          setInputValue={setNumberValue}
+          setInputStatus={setNumberStatus}
+          setInputError={setNumberError} />
 
-      <MagicInputReal
-        inputStatus="disabled"
-        inputValue={number2Value}
-        inputType="number"
+        <MagicInputReal
+          inputStatus="disabled"
+          inputValue={number2Value}
+          inputType="number"
 
-        label="Number 2"
-        placeholder="0"
-        isRequired={false}
-        errorMessage={number2Error}
-        icon='heart'
-        focusTheme='gray'
+          label="Number 2"
+          placeholder="0"
+          isRequired={false}
+          errorMessage={number2Error}
+          icon='heart'
+          focusTheme='gray'
 
-        setInputValue={setNumber2Value}
-        setInputStatus={setNumber2Status}
-        setInputError={setNumber2Error} />
+          setInputValue={setNumber2Value}
+          setInputStatus={setNumber2Status}
+          setInputError={setNumber2Error} />
+      </div>
+      <div>
+        <MagicInputReal
+          inputStatus={number3Status}
+          inputValue={number3Value}
+          inputType="number"
+
+          label="Number 3"
+          placeholder="0"
+          isRequired={false}
+          errorMessage={number3Error}
+          focusTheme='yellow'
+          funtionalButton={(updateUp, updateDown, inputStatus, callBack) => <UpDown updateUp={updateUp} updateDown={updateDown} inputStatus={inputStatus} />}
+
+          setInputValue={setNumber3Value}
+          setInputStatus={setNumber3Status}
+          setInputError={setNumber3Error}
+        />
+      </div>
     </div>
   )
 }
