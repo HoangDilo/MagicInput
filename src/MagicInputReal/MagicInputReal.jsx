@@ -110,7 +110,7 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder
                         onChange={(event) => handleInput(event)}
                         onFocus={handleFocus}
                         onBlur={handleBlur}
-                        onKeyDown={inputType === 'number' ? handleKeyDown : ()=>{}}
+                        onKeyDown={inputType === 'number' ? handleKeyDown : undefined}
                     />
                     <div className='right-icon'>
                         {funtionalButton && funtionalButton(updateUp, updateDown, inputStatus, (type) => setInternalType(type))}
