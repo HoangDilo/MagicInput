@@ -4,7 +4,26 @@ import { useEffect, useRef, useState } from "react"
 
 function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder, isRequired, hint, errorMessage, emptyMessage, icon, focusTheme, funtionalButton, setInputValue, setInputStatus, setInputError }) {
     const [theme, setTheme] = useState();
+    const [internalValue, setInternalValue] = useState(inputValue);
+    const [internalType, setInternalType] = useState(inputType);
     const inputRef = useRef();
+
+    useEffect(() => {
+        if(inputType === 'number') {
+            setInternalType('text');
+            inputRef.current.addEventListener('keydown', (event) => {
+                const isNumber = /[0-9eE\.\-]/.test(event.key);
+                if(!isNumber) {
+                    event.preventDefault();
+                }
+            })
+        }
+    }, [inputType])
+
+    //gan lai input value tu parent khi co inputValue thay doi
+    useEffect(() => {
+        setInternalValue(inputValue);
+    }, [inputValue])
 
     useEffect(() => {
         switch (inputStatus) {
@@ -32,8 +51,9 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder
         }
     }, [inputStatus])
 
-    const handleInput = () => {
-        setInputValue(inputRef.current.value);
+    //set lai state inputValue cua parent
+    const handleInput = (event) => {
+        setInputValue(event.target.value);
     }
     const handleFocus = () => {
         if (!errorMessage) {
@@ -71,9 +91,6 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder
         inputRef.current.focus();
         setInputValue(inputRef.current.value);
     }
-    const setInputTypeClone = (type) => { 
-        inputRef.current.type = type; 
-    }
 
     return (
         <div className="input-container">
@@ -84,7 +101,7 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder
                 </label>}
                 <div className='smaller-input-container'>
                     <div className={`icon ${icon}`}></div>
-                    <input type={inputType}
+                    <input type={internalType}
                         id={`input-${label}`}
                         style={{
                             border: `1px solid ${theme}`,
@@ -92,19 +109,18 @@ function MagicInputReal({ inputStatus, inputValue, inputType, label, placeholder
                             paddingRight: configurePaddingRight()
                         }}
                         placeholder={placeholder}
+                        value={internalValue}
                         disabled={inputStatus === 'disabled'}
                         ref={inputRef}
-                        onInput={handleInput}
+                        onChange={(event) => handleInput(event)}
                         onFocus={handleFocus}
                         onBlur={handleBlur} />
                     <div className='right-icon'>
-                        {funtionalButton && funtionalButton(updateUp, updateDown, inputStatus, (type) => setInputTypeClone(type))}
-                        {/* {(inputType === 'number') && <UpDown updateUp={updateUp} updateDown={updateDown} inputStatus={inputStatus} />}
-                        {(inputType === 'password') && <HideShow setInputTypeClone={(type) => setInputTypeClone(type)} inputStatus={inputStatus} />} */}
+                        {funtionalButton && funtionalButton(updateUp, updateDown, inputStatus, (type) => setInternalType(type))}
                     </div>
                 </div>
             </div>
-            <div className='message'>
+            <div className='message' style={{color: errorMessage && 'red'}}>
                 {errorMessage ? errorMessage : hint}
             </div>
         </div>

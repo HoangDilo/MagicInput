@@ -18,7 +18,7 @@ function App() {
   const [passwordError, setPasswordError] = useState('');
 
   const [numberStatus, setNumberStatus] = useState('default');
-  const [numberValue, setNumberValue] = useState(0);
+  const [numberValue, setNumberValue] = useState('');
   const [numberError, setNumberError] = useState('');
 
   const [number2Status, setNumber2Status] = useState('default');
@@ -36,11 +36,11 @@ function App() {
         setEmailError('');
       } else {
         setEmailStatus('error');
-        setEmailError(<span style={{ color: 'red' }}>Email is not valid</span>)
+        setEmailError(<span>Email is not valid</span>)
       }
-    } else if (emailStatus === 'error'){
-      setEmailStatus('focus');
-      setEmailError('');
+    } else if (emailStatus !== 'default'){
+      setEmailStatus('error');
+      setEmailError('Are you dumb? I said email CAN\'T be empty!');
     }
   }, [emailValue])
 
@@ -55,12 +55,9 @@ function App() {
         setEmail2Error('');
       } else {
         setEmail2Status('error');
-        setEmail2Error(<span style={{ color: 'red' }}>Email is not valid</span>)
+        setEmail2Error(<span>Email is not valid</span>)
       }
-    } else if(email2Status === 'error'){
-      setEmail2Status('focus');
-      setEmail2Error('');
-    }
+    } 
   }, [email2Value])
 
   //validate password 1
@@ -74,11 +71,11 @@ function App() {
         setPasswordError('');
       } else {
         setPasswordStatus('error');
-        setPasswordError(<span style={{ color: 'red' }}>Password must be at least 8 Characters and must contain at least a Capital Letter, a Number and a Special Character.</span>)
+        setPasswordError(<span>Password must be at least 8 Characters and must contain at least a Capital Letter, a Number and a Special Character.</span>)
       }
-    } else if (passwordStatus === 'error'){
-      setPasswordStatus('focus');
-      setPasswordError('');
+    } else if (passwordStatus !== 'default'){
+      setPasswordStatus('error');
+      setPasswordError('Password can not be empty');
     }
   }, [passwordValue])
 
@@ -86,7 +83,7 @@ function App() {
   useEffect(() => {
     //console.log(numberValue);
     if (numberValue) {
-      const numberRegex = /^-?\d+(\.\d+)?$/;
+      const numberRegex = /^[-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?$/;
       if (numberValue.match(numberRegex)) {
         setNumberStatus('focus')
         setNumberError('');
@@ -94,9 +91,9 @@ function App() {
         setNumberStatus('error');
         setNumberError(<span style={{ color: 'red' }}>Number must be number!</span>)
       }
-    } else if(numberStatus == 'error') {
-      setNumberStatus('focus');
-      setNumberError('');
+    } else if(numberStatus !== 'default') {
+      setNumberStatus('error');
+      setNumberError('Number can not be empty');
     }
   }, [numberValue])
 
@@ -113,7 +110,7 @@ function App() {
         isRequired={true}
         hint={'Email should have this format: \'abc@xyz.ijk\''}
         errorMessage={emailError}
-        emptyMessage={<span style={{color: 'red'}}>Email can not be empty</span>}
+        emptyMessage="Email can not be empty"
         icon='heart'
         focusTheme='#5570F1'
 
@@ -146,7 +143,8 @@ function App() {
         isRequired={true}
         hint={'Make sure your password is strong'}
         errorMessage={passwordError}
-        emptyMessage="Password can not be empty"
+        emptyMessage="Password can be empty"
+
         icon='lock'
         focusTheme='#FF20FF'
         funtionalButton={( updateUp, updateDown, inputStatus, callBack ) => <HideShow setInputTypeClone={callBack} inputStatus={inputStatus} />}
@@ -169,13 +167,14 @@ function App() {
       <MagicInputReal
         inputStatus={numberStatus}
         inputValue={numberValue}
-        inputType="text"
+        inputType="number"
 
         label="Number"
         placeholder="0"
         isRequired={true}
         errorMessage={numberError}
-        emptyMessage={<span style={{color: 'red'}}>Number can not be empty</span>}
+        emptyMessage="Number can not be empty"
+
         icon='lock'
         focusTheme='blue'
         funtionalButton={(updateUp, updateDown, inputStatus, callBack) => <UpDown updateUp={updateUp} updateDown={updateDown} inputStatus={inputStatus} />}
